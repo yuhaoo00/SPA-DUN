@@ -1,0 +1,12 @@
+**/__pycache__
+**/SPA-DUN-color
+**/SPA-DUN-simu
+**/SPA-DUN-real
+**/Masks
+**/Real_test
+**/Simu_test
+*.pyc
+*.pth
+*.pkl
+*.zip
+*.mat

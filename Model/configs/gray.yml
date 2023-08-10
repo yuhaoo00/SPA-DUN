@@ -1,0 +1,31 @@
+train:
+    datapath: "Dataset/DAVIS/JPEGImages/480p"
+    valid_datapath: "Dataset/Simu_test/gray/256"
+    maskpath: "Dataset/Masks/new/rand_cr24.mat"
+    seed: 1
+    patch_size: 128
+    batch_size: 6
+    ckpt_size: 20
+    epochs: 6000
+    lr: 0.001
+    LR_DECAY:
+        step: [1000, 300]
+        gamma: 0.9
+
+model:
+    name: "SPA-DUN-simu"
+    num_stage: 10
+    color: 1
+    width: 48
+    num_blocks: [4,6,4]
+    width_ratio: 3
+    losstype: "RMSE"
+    Mask_info: True
+    CR_info: True
+    shortcut: weight
+    num_loss: 3
+    weight_loss: 0.5
+
+flex:
+    cr_train: [24,18,14,8]
+    cr_model: 24
