@@ -29,28 +29,28 @@ python download_datasets.py
 
 Name | Type | Resolution | Path | Download
 -|-|-|-|-
-Grayscale Benchmark Datasets | Simulation | 256x256 | Dataset/Simu_test/gray/256 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
-Largescale Datasets |  Simulation | 1080x1920 | Dataset/Simu_test/gray/1080 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
-RGB Benchmark Datasets |  Simulation | 512x512 | Dataset/Simu_test/color/512 |  [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
-Largescale RGB Datasets |  Simulation | 1080x1920 | Dataset/Simu_test/color/1080 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
-Real Captured Datasets | Real | 512x512 | Dataset/Real_test | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
+Grayscale Benchmark Datasets | Simulation | 256x256 | Dataset/Simu_test/gray/256 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
+Largescale Datasets |  Simulation | 1080x1920 | Dataset/Simu_test/gray/1080 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
+RGB Benchmark Datasets |  Simulation | 512x512 | Dataset/Simu_test/color/512 |  [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
+Largescale RGB Datasets |  Simulation | 1080x1920 | Dataset/Simu_test/color/1080 | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
+Real Captured Datasets | Real | 512x512 | Dataset/Real_test | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
 
 ### Sampling Masks
 
 Type | Path | Download
 -|-|-
-Simulation | Dataset/Masks/new | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
-Real |  Dataset/Masks/real | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K)
+Simulation | Dataset/Masks/new | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
+Real |  Dataset/Masks/real | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz20vfTQRaXeaUXI?e=hQVh6K) / [Google](https://drive.google.com/drive/folders/1jUkJcbPa1WPxDnY6PLYr4-lmAJ1N_6Ry?usp=sharing)
 
 ### Checkpoints
 
 Type | Path | Download
 -|-|-
-Gray Simu| Checkpoints/SPA-DUN-simu | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs)
-Color Simu | Checkpoints/SPA-DUN-color | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs)
-Real | Checkpoints/SPA-DUN-real | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs)
+Gray Simu| Checkpoints/SPA-DUN-simu | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs) / [Google](https://drive.google.com/drive/folders/1KK-EkQcEqIf5aLZ5NvUNOiAOomOgSkgA?usp=sharing)
+Color Simu | Checkpoints/SPA-DUN-color | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs) / [Google](https://drive.google.com/drive/folders/1KK-EkQcEqIf5aLZ5NvUNOiAOomOgSkgA?usp=sharing)
+Real | Checkpoints/SPA-DUN-real | [OneDrive](https://1drv.ms/f/s!AtMIjuudSyv4iz-lC73AILdC0TlA?e=ear9gs) / [Google](https://drive.google.com/drive/folders/1KK-EkQcEqIf5aLZ5NvUNOiAOomOgSkgA?usp=sharing)
 
-**_Tips: If you are in China, you may need to access OneDrive via vpn._**
+**_Tips: If you are in China, you may need to access OneDrive or GoogleDrive via vpn._**
 
 ## 2. Training
 
