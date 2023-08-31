@@ -8,12 +8,13 @@
 
 - pytorch 1.11.0+cu113
 - numpy 1.22.3
-- opencv 4.6.0
-- Pillow 9.1.0
+- opencv-python 4.6.0
+- pillow 9.1.0
 - scikit-image 0.19.2
 - scipy 1.8.0
 - thop 0.1.1
 - gdown 4.5.3
+- pyyaml 6.0.1
 
 The above package versions are feasible but not unique.
 
@@ -82,10 +83,10 @@ Each reconstruction frame will be saved in `Outputs/...` folder.
 
 ```shell
 # Seen Pattern
-python Model/test.py --output --CR 24 --maskpath Dataset/Masks/new/rand_cr50_512.mat --dir Checkpoints/SPA-DUN-color
+python Model/test.py --output --CR 24 --datapath Dataset/Simu_test/color/512  --maskpath Dataset/Masks/new/rand_cr50_512.mat --dir Checkpoints/SPA-DUN-color
 
 # Unseen Pattern
-python Model/test.py --output --CR 24 --maskpath Dataset/Masks/new/R1_cr50_512.mat --dir Checkpoints/SPA-DUN-color
+python Model/test.py --output --CR 24 --datapath Dataset/Simu_test/color/512  --maskpath Dataset/Masks/new/R1_cr50_512.mat --dir Checkpoints/SPA-DUN-color
 ```
 
 ### Large-scale Tests (Table 3)
@@ -97,7 +98,7 @@ python Model/test.py --output --CR 24 --datapath Dataset/Simu_test/gray/1080 --m
 ### Large-scale RGB Tests (Table 4)
 
 ```shell
-python Model/test.py --output --CR 24 --datapath Dataset/Simu_test/gray/1080 --maskpath Dataset/Masks/new/rand_cr50_1080.mat --dir Checkpoints/SPA-DUN-color
+python Model/test.py --output --CR 24 --datapath Dataset/Simu_test/color/1080 --maskpath Dataset/Masks/new/rand_cr50_1080.mat --dir Checkpoints/SPA-DUN-color
 ```
 
 ### Real Applications
