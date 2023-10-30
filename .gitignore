@@ -5,6 +5,7 @@
 **/Masks
 **/Real_test
 **/Simu_test
+**/Dataset/DAVIS
 *.pyc
 *.pth
 *.pkl
