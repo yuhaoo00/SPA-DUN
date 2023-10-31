@@ -8,6 +8,7 @@ import scipy.io as sio
 import torch
 import contextlib
 from torch.utils.data import DataLoader
+from xformers.ops import MemoryEfficientAttentionFlashAttentionOp
 
 from skimage.metrics import structural_similarity as compare_ssim
 from skimage.metrics import peak_signal_noise_ratio as compare_psnr
@@ -36,7 +37,7 @@ class Handler(object):
         self.valid_datapath = self.args.train.valid_datapath
 
         self.model = CSmodel(
-                color_channel=args.model.color, CR_channel=args.flex.cr_model, CR_skip_step=args.flex.cr_skip,
+                color_channel=args.model.color, CR_channel=args.flex.cr_model, CR_skip_step=args.flex.cr_model//2,
                 down_block_types=args.model.down_block_types,
                 up_block_types=args.model.up_block_types,
                 block_out_channels=args.model.block_out_channels,
@@ -44,6 +45,12 @@ class Handler(object):
                 freq_shift=args.model.freq_shift,
                 flip_sin_to_cos=args.model.flip_sin_to_cos,
                 losstype=args.model.losstype).to(self.device)
+        
+        if args.train.xformer:
+            self.model.Unet.enable_xformers_memory_efficient_attention(attention_op=MemoryEfficientAttentionFlashAttentionOp)
+        
+        if args.train.gradient_checkpointing:
+            self.model.Unet.enable_gradient_checkpointing()
 
         self.optimizer = torch.optim.AdamW([{'params': self.model.parameters(), 'initial_lr': args.train.lr}], lr=args.train.lr, betas=(0.9, 0.9), weight_decay=0)
         

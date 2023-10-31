@@ -3,16 +3,15 @@ train:
     valid_datapath: "Dataset/Simu_test/gray/256"
     seed: 1
     patch_size: 128
-    batch_size: 4
+    batch_size: 16
     ckpt_size: 10
-    epochs: 6000
+    epochs: 100
     lr: 0.001
-    LR_DECAY:
-        step: [1000, 300]
-        gamma: 0.9
+    xformer: False
+    gradient_checkpointing: False
 
 model:
-    name: "SPA-DUN-simu"
+    name: "CT_U"
     color: 1
     losstype: "RMSE"
     down_block_types: ["DownBlock2D", "DownBlock2D", "DownBlock2D"]
@@ -23,6 +22,6 @@ model:
     flip_sin_to_cos: True
 
 flex:
-    cr_train: [8, 12, 16, 20]
+    cr_train: [8]
     cr_model: 8
-    cr_skip: 4
+    cr_skip: 1

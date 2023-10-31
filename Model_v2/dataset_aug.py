@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 class Imgdataset(Dataset):
-    def __init__(self, root_path='Dataset/DAVIS/JPEGImages/480p', crop_size=256, color=1, length=8, skip=8):
+    def __init__(self, root_path='Dataset/DAVIS/JPEGImages/480p', crop_size=256, color=1, length=8, skip=1):
         super(Imgdataset, self).__init__()
         self.data = []
         self.length = length
@@ -98,8 +98,8 @@ def normalize_augment(data, cuda=True, cr=24, start=0):
 
 if __name__ == '__main__':
     from tqdm import tqdm
-    train_dataloader = DataLoader(dataset=Imgdataset(),  batch_size=16, shuffle=True)
+    train_dataloader = DataLoader(dataset=Imgdataset(),  batch_size=8, shuffle=True, num_workers=8, pin_memory=True)
     with tqdm(total=len(train_dataloader), ncols=150) as _tqdm:
         for iteration, batch in enumerate(train_dataloader):
-            #batch = normalize_augment(batch)
+            batch = normalize_augment(batch, cr=8)
             _tqdm.update(1)
