@@ -1,0 +1,26 @@
+train:
+    datapath: "Dataset/DAVIS/JPEGImages/480p"
+    valid_datapath: "Dataset/Simu_test/gray/256"
+    seed: 1
+    patch_size: 128
+    batch_size: 16
+    ckpt_size: 10
+    epochs: 100
+    lr: 0.001
+
+model:
+    name: "RT_U"
+    color: 1
+    width: 48
+    num_blocks: [2,3,2]
+    width_ratio: 2.6
+    losstype: "RMSE"
+    blocktype: "restormer"
+    Mask_info: False
+    CR_info: False
+    shortcut: "weight"
+
+flex:
+    cr_train: [8]
+    cr_model: 8
+    cr_skip: 1

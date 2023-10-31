@@ -1,0 +1,26 @@
+train:
+    datapath: "Dataset/DAVIS/JPEGImages/480p"
+    valid_datapath: "Dataset/Simu_test/gray/256"
+    seed: 1
+    patch_size: 128
+    batch_size: 8
+    ckpt_size: 10
+    epochs: 100
+    lr: 0.001
+
+model:
+    name: "ETC_U_multi"
+    color: 1
+    width: 64
+    num_blocks: [2,3,2]
+    width_ratio: 3
+    losstype: "RMSE"
+    blocktype: "etc"
+    Mask_info: True
+    CR_info: True
+    shortcut: "weight"
+
+flex:
+    cr_train: [8,12]
+    cr_model: 8
+    cr_skip: 1
