@@ -1,0 +1,22 @@
+train:
+    datapath: "Dataset/DAVIS/JPEGImages/480p"
+    valid_datapath: "Dataset/Simu_test/gray/256"
+    seed: 1
+    patch_size: 128
+    batch_size: 16
+    ckpt_size: 10
+    epochs: 100
+    lr: 0.0001
+
+model:
+    name: "ESCI_t"
+    in_ch: 16
+    units: 8
+    group_num: 4
+    color: 1
+    losstype: "RMSE"
+
+flex:
+    cr_train: [8]
+    cr_model: 8
+    cr_skip: 1

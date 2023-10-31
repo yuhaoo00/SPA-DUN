@@ -2,6 +2,11 @@
 **/SPA-DUN-color
 **/SPA-DUN-simu
 **/SPA-DUN-real
+**/CT_U
+**/ETC_U
+**/ETC_U_multi
+**/RT_U
+**/ESCI_t
 **/Masks
 **/Real_test
 **/Simu_test
