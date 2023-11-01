@@ -39,18 +39,21 @@ class LayerNorm2d(nn.Module):
         return LayerNormFunction.apply(x, self.weight, self.bias, self.eps)
 
 class ResBlock(nn.Module):
-    def __init__(self, chan, chan_MI, width_ratio=1, shortcut='normal', MI=False):
+    def __init__(self, chan, chan_MI, chan_TI, width_ratio=1, shortcut='normal', MI=False, TI=False):
         super().__init__()
         dw_chan = chan * width_ratio
         self.conv1 = nn.Conv2d(in_channels=chan, out_channels=dw_chan, kernel_size=1, padding=0, stride=1, groups=1, bias=True) # Nochange w/o bias 
         self.conv2 = nn.Conv2d(in_channels=dw_chan, out_channels=dw_chan, kernel_size=3, padding=1, stride=1, groups=dw_chan, bias=True)
         self.conv3 = nn.Conv2d(in_channels=dw_chan, out_channels=chan, kernel_size=1, padding=0, stride=1, groups=1, bias=True)
-        
+
+
+        self.MI_flag = MI
         if MI:
             self.MI_Attn = MaskGuidedMechanism(chan_MI, chan)
-            self.MI_flag = True
-        else:
-            self.MI_flag = False
+        self.TI_flag = TI
+        if TI:
+            self.TI_proj = torch.nn.Linear(chan_TI, chan)
+
 
         self.gelu = nn.GELU() # Significant than ReLU
 
@@ -68,9 +71,9 @@ class ResBlock(nn.Module):
             self.beta = 1
             self.gamma = 1
 
-    def forward(self, inp, mask):
+
+    def forward(self, inp, mask, temb):
         # [b, channel, h, w] -> [b, channel, h, w]
-        # [b, channel, h, w]
         x = inp
 
         x = self.norm1(x)
@@ -81,6 +84,10 @@ class ResBlock(nn.Module):
         if self.MI_flag:
             x = x * self.MI_Attn(mask)
         y = inp + x * self.beta
+
+        if self.TI_flag:
+            temb = self.TI_proj(self.gelu(temb))[:, :, None, None]
+            y = y + temb
 
         x = self.norm2(y)
         x = self.conv4(x)

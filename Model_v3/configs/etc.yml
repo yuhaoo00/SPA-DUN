@@ -12,12 +12,13 @@ model:
     name: "ETC_U_multi"
     color: 1
     width: 64
+    temb_channel: 32
     num_blocks: [2,3,2]
     width_ratio: 3
     losstype: "RMSE"
     blocktype: "etc"
     Mask_info: True
-    CR_info: True
+    Temb_info: False
     shortcut: "weight"
 
 flex:

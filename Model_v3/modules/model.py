@@ -5,30 +5,38 @@ from einops import rearrange
 from .unet import Unet
 from .utils import *
 
+
 class CSmodel(nn.Module):
     def __init__(self, color_channel=1, CR_channel=8, CR_skip_step=4,
-                width=64, num_blocks=[4,6,4], width_ratio=1,
+                width=64, width_ratio=1, num_blocks=[4,6,4],
                 shortcut='normal', block_type='etc', losstype='RMSE',
-                Mask_info=False, CR_info=False):
+                Mask_info=False, Temb_info=False, temb_channel=32):
         super().__init__()
 
         self.color = color_channel
         self.CR = CR_channel
         self.CR_skip_step = CR_skip_step
-        self.CR_info = CR_info
+
+        self.Temb_info = Temb_info
 
         self.Unet = Unet(
             in_channel=(CR_channel*color_channel)+1,
             out_channel=CR_channel*color_channel,
             mask_channel=CR_channel,
+            temb_channel=temb_channel,
             width=width,
             num_blocks=num_blocks, 
             width_ratio=width_ratio, 
             shortcut=shortcut,
             block_type=block_type, 
             Mask_info=Mask_info, 
-            CR_info=CR_info
+            Temb_info=Temb_info
         )
+
+        self.time_encoder = nn.Sequential(
+            Timesteps(temb_channel//4, True, 0),
+            TimestepEmbedding(temb_channel//4, temb_channel)
+         )
 
         if losstype == 'MSE':
             self.criterion = nn.MSELoss()
@@ -73,12 +81,19 @@ class CSmodel(nn.Module):
             xi = x0[:,i*self.color:(i+self.CR)*self.color,:,:]
             xi = torch.cat((xi, y_norm), dim=1)
             mi = Phi[:,i*self.color:(i+self.CR)*self.color,:,:]
-            if self.CR_info:
-                mi = torch.cat((mi, y_norm), dim=1)
-            xi = self.Unet(xi, mi)
+            ti = self.get_temb(i, i+self.CR, B, y.device) if self.Temb_info else None
+
+            xi = self.Unet(xi, mi, ti)
             x_pred[:,i*self.color:(i+self.CR)*self.color,:,:] += xi/2
         
         x_pred[:,:(self.CR_skip_step)*self.color,:,:] *= 2
         x_pred[:,-1*(self.CR_skip_step)*self.color:,:,:] *= 2
 
         return x_pred
+    
+    def get_temb(self, CR_l, CR_r, B, device):
+        timesteps = torch.arange(CR_l,CR_r).to(device).float()
+        timesteps = timesteps[None,:] * torch.ones((B,CR_r-CR_l), dtype=timesteps.dtype, device=device) # [B, maxCR]
+
+        temb = self.time_encoder(timesteps) # [B, maxCR, Dt]
+        return temb.reshape(B, -1) # [B, T*Dt]
