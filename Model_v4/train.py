@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    with open('ESCI/configs/{}'.format(args.config), 'r') as f:
+    with open('Model_v4/configs/{}'.format(args.config), 'r') as f:
         configs = yaml.safe_load(f)
     args = dict2namespace(configs, args)
     if args.seed != -1:

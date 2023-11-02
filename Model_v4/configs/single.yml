@@ -10,13 +10,17 @@ train:
     lr: 0.001
 
 model:
-    name: "ESCI_Tiny"
+    name: "Mix"
     tag: "锁Mask多CR"
-    in_ch: 16
-    units: 8
-    group_num: 4
     color: 1
+    width: 64
+    temb_channel: 32
+    num_blocks: [2,2,2]
+    width_ratio: 3
     losstype: "RMSE"
+    Mask_guide: "Mask"
+    Temb_guide: False
+    shortcut: "weight"
 
 flex:
     cr_train: [8,12]

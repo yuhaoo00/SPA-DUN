@@ -14,7 +14,7 @@ from skimage.metrics import structural_similarity as compare_ssim
 from skimage.metrics import peak_signal_noise_ratio as compare_psnr
 
 from utils import save_img, save_gif, time2file_name, set_seed, print_args
-from model import EfficientSCI
+from modules.model import CSmodel
 from dataset_aug import *
 
 class Handler(object):
@@ -36,9 +36,11 @@ class Handler(object):
         self.cr_now = args.flex.cr_train[0]
         self.valid_datapath = self.args.train.valid_datapath
 
-        self.model = EfficientSCI(
-                args.model.in_ch, args.model.units,
-                args.model.group_num, args.model.color).to(self.device)
+        self.model = CSmodel(
+                args.model.color, args.flex.cr_model, 
+                args.model.width, args.model.width_ratio, args.model.num_blocks,
+                args.model.shortcut, args.model.losstype,
+                args.model.Mask_guide, args.model.Temb_guide, args.model.temb_channel).to(self.device)
 
         self.optimizer = torch.optim.AdamW([{'params': self.model.parameters(), 'initial_lr': args.train.lr}], lr=args.train.lr, betas=(0.9, 0.9), weight_decay=0)
         
@@ -122,9 +124,9 @@ class Handler(object):
                 xx = random.randint(0, self.mask.shape[-2]-self.args.train.patch_size)
                 yy = random.randint(0, self.mask.shape[-1]-self.args.train.patch_size)
                 mask = self.mask[:, cc:cc+self.cr_now, xx:xx+self.args.train.patch_size, yy:yy+self.args.train.patch_size]
-
                 # data [bs, cr, C, patch_size, patch_size] gpu
-                # mask [1,  cr, patch_size, patch_size]    gpu
+                # mask [1, cr, patch_size, patch_size]    gpu
+
                 if self.args.useAMP:
                     with torch.cuda.amp.autocast():
                         Loss = self.model.forward_train(data, mask, rgb2bayer)
@@ -137,7 +139,6 @@ class Handler(object):
                     epoch_loss += Loss.data
                     Loss.backward()
                     self.optimizer.step()
-                
 
             time2 = time.time()
             epoch_loss = epoch_loss/len(train_dataloader)
@@ -190,7 +191,7 @@ class Handler(object):
             nframe, H, W, C = orig.shape
             nframe_can = int((nframe//self.cr_now)*self.cr_now)
             orig = orig[:nframe_can, :, :, :]
-            mask = self.mask[:,:self.cr_now,:H,:W]
+            mask = torch.randint(0,2,(nframe//self.cr_now, self.cr_now, H, W), device=self.device).float()
 
             if C > 1:
                 r = np.array([[1, 0], [0, 0]])
@@ -274,6 +275,6 @@ class Handler(object):
         if not os.path.exists(self.ckpt_dir):
             os.makedirs(self.ckpt_dir)
         
-        os.system('cp ESCI/configs/{} {}/configs.yml'.format(self.args.config, self.ckpt_dir))
+        os.system('cp Model_v4/configs/{} {}/configs.yml'.format(self.args.config, self.ckpt_dir))
 
 

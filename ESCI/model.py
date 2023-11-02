@@ -127,7 +127,8 @@ class EfficientSCI(nn.Module):
 
     def bayer_init(self,y,Phi,Phi_s):
         bayer = [[0,0], [0,1], [1,0], [1,1]]
-        b,f,h,w = Phi.shape
+        b = y.shape[0]
+        _,f,h,w = Phi.shape
         y_bayer = torch.zeros(b,1,h//2,w//2,4).to(y.device)
         Phi_bayer = torch.zeros(b,f,h//2,w//2,4).to(y.device)
         Phi_s_bayer = torch.zeros(b,1,h//2,w//2,4).to(y.device)
