@@ -1,11 +1,14 @@
 import torch
 import torch.nn as nn
-from .block import ResBlock
 from .utils import *
 
 class ResBlocks(nn.Module):
-    def __init__(self, num_block, chan, chan_MI, chan_TI, width_ratio=1, shortcut='normal', MI=False, TI=False):
+    def __init__(self, block_type, num_block, chan, chan_MI, chan_TI, width_ratio=1, shortcut='normal', MI=False, TI=False):
         super(ResBlocks, self).__init__()
+        if block_type == 'mix':
+            from .block import ResBlock
+        elif block_type == 'rt':
+            from .restormer import ResBlock
 
         self.blocks = nn.ModuleList([])
         for _ in range(num_block):
@@ -45,7 +48,8 @@ class Unet(nn.Module):
                 width_ratio=1, 
                 shortcut='normal',
                 Mask_guide=None, #None, Mask, McatR, McatY, MaddT
-                Temb_guide=False,):
+                Temb_guide=False,
+                block_type='mix'):
         super().__init__()
         in_channel = mask_channel*color_channel + 1
         out_channel = mask_channel*color_channel
@@ -70,19 +74,19 @@ class Unet(nn.Module):
         chan = width
 
         for i in range(len(num_blocks)-1):
-            self.encoders.append(ResBlocks(num_blocks[i], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide))
+            self.encoders.append(ResBlocks(block_type, num_blocks[i], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide))
             self.downs.append(Downsample(chan))
             self.maskdowns.append(Downsample(chan_MI))
             chan = chan * 2
             chan_MI = chan_MI * 2
 
-        self.middle_blks = ResBlocks(num_blocks[-1], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide)
+        self.middle_blks = ResBlocks(block_type, num_blocks[-1], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide)
 
         for i in range(len(num_blocks)-2, -1, -1):
             self.ups.append(Upsample(chan))
             chan = chan // 2
             chan_MI = chan_MI // 2
-            self.decoders.append(ResBlocks(num_blocks[i], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide))
+            self.decoders.append(ResBlocks(block_type, num_blocks[i], chan, chan_MI, temb_channel, width_ratio, shortcut, Mask_guide, Temb_guide))
 
 
     def forward(self, v, phi, temb):

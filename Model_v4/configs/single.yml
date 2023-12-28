@@ -10,8 +10,8 @@ train:
     lr: 0.001
 
 model:
-    name: "Mix"
-    tag: "锁Mask多CR"
+    name: "RT"
+    tag: "锁MaskCR8"
     color: 1
     width: 64
     temb_channel: 32
@@ -21,8 +21,9 @@ model:
     Mask_guide: "Mask"
     Temb_guide: False
     shortcut: "weight"
+    blocktype: "rt"
 
 flex:
-    cr_train: [8,12]
-    cr_model: 12
+    cr_train: [8]
+    cr_model: 8
     cr_skip: 1

@@ -39,7 +39,7 @@ class Handler(object):
         self.model = CSmodel(
                 args.model.color, args.flex.cr_model, 
                 args.model.width, args.model.width_ratio, args.model.num_blocks,
-                args.model.shortcut, args.model.losstype,
+                args.model.shortcut, args.model.losstype, args.model.blocktype,
                 args.model.Mask_guide, args.model.Temb_guide, args.model.temb_channel).to(self.device)
 
         self.optimizer = torch.optim.AdamW([{'params': self.model.parameters(), 'initial_lr': args.train.lr}], lr=args.train.lr, betas=(0.9, 0.9), weight_decay=0)

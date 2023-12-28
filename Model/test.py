@@ -3,6 +3,7 @@ import os
 import time
 import yaml
 import numpy as np
+import pandas as pd
 from argparse import ArgumentParser
 import scipy.io as sio
 from network.unfolding import VCS_UF
@@ -14,6 +15,7 @@ parser = ArgumentParser()
 parser.add_argument('--useCPU', action='store_true', default=False)
 parser.add_argument('--real',  action='store_true', default=False)
 parser.add_argument('--output',  action='store_true', default=False)
+parser.add_argument('--slice',  action='store_true', default=False)
 
 parser.add_argument('--dir', type=str, default='Checkpoints/SPA-DUN-simu')
 parser.add_argument('--modelpath', type=str, default='ckpt_best.pkl')
@@ -60,6 +62,8 @@ if not args.real:
     time_sample = []
     pred_sample = []
     nmeas_all = 0
+    
+    pd_log = {}
 
     for i in range(len(test_list)):
         orig = (np.float32(sio.loadmat(args.datapath+'/'+test_list[i])['orig'])/255.)
@@ -131,6 +135,9 @@ if not args.real:
         pred_sample.append(out_pics)
         nmeas_all += nmeas
 
+        pd_log[test_list[i][:-4]+"_psnr"] = psnr_
+        pd_log[test_list[i][:-4]+"_ssim"] = ssim_
+
         print("[{}] Avg.PSNR: {:.4f}, Avg.SSIM {:.4f}, UseTime {:.4f} s".format(
             test_list[i], np.mean(psnr_), np.mean(ssim_), usetime))
 
@@ -151,6 +158,9 @@ if not args.real:
     print("[Overall] Avg.PSNR {:.4f}, Avg.SSIM {:.4f}, Avg.time {:.4f} s/meas.".format(
             np.mean(psnr_sample), np.mean(ssim_sample), time_per_meas))
     print("====================================================================")
+
+    if args.slice:
+        pd.DataFrame(pd_log).to_csv('{}/cr{}/slice.csv'.format(res_dir, args.CR))
 
 else:
     mask = torch.from_numpy(np.float32(sio.loadmat(args.maskpath)['mask'])).to(device).permute(2,0,1).unsqueeze(0)

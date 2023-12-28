@@ -9,7 +9,7 @@ from .utils import *
 class CSmodel(nn.Module):
     def __init__(self, color_channel=1, mask_channel=8,
                 width=64, width_ratio=1, num_blocks=[4,6,4],
-                shortcut='normal', losstype='RMSE',
+                shortcut='normal', losstype='RMSE', block_type='mix',
                 Mask_guide=None, Temb_guide=False, temb_channel=64):
         super().__init__()
 
@@ -25,7 +25,8 @@ class CSmodel(nn.Module):
             width_ratio=width_ratio, 
             shortcut=shortcut,
             Mask_guide=Mask_guide, 
-            Temb_guide=Temb_guide
+            Temb_guide=Temb_guide,
+            block_type=block_type,
         )
 
         self.Mask_guide = Mask_guide
